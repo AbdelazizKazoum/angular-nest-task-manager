@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   imports: [],
   templateUrl: './register.html',
   styleUrl: './register.css',
-  standalone: true
 })
 export class Register {
 

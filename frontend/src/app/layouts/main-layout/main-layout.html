@@ -1,1 +1,55 @@
-<p>main-layout works!</p>
+<div class="flex w-full h-screen text-gray-900 transition-colors duration-300 bg-gray-50 dark:bg-dark-bg dark:text-gray-100">
+
+  <aside class="flex-col hidden w-64 bg-white border-r border-gray-200 dark:border-dark-border dark:bg-dark-surface md:flex">
+    
+    <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-dark-border">
+      <h1 class="text-xl font-bold text-primary-600 dark:text-primary-500">TaskFlow</h1>
+    </div>
+
+    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      <a routerLink="/dashboard" routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400" 
+         class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+        Dashboard
+      </a>
+
+      <a routerLink="/tasks" routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400"
+         class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/50">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+        My Tasks
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-200 dark:border-dark-border">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center justify-center w-10 h-10 font-bold rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">JD</div>
+        <div>
+          <p class="text-sm font-medium">John Doe</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">View Profile</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex flex-col flex-1 overflow-hidden">
+    
+    <header class="flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200 dark:border-dark-border dark:bg-dark-surface">
+      <button class="mr-4 text-gray-500 md:hidden">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Overview</h2>
+
+      <div class="flex items-center gap-4">
+        <button (click)="themeService.toggleTheme()" class="p-2 text-gray-500 rounded-full hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+          <svg *ngIf="themeService.darkMode()" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg *ngIf="!themeService.darkMode()" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 24.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 p-6 overflow-y-auto bg-gray-50 dark:bg-dark-bg">
+        <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

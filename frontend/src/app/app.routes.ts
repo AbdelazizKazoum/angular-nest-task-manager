@@ -42,7 +42,7 @@ export const routes: Routes = [
       }
     ]
   },
-  
+
   // 4. Wildcard (404) - Optional but recommended
   {
     path: '**',

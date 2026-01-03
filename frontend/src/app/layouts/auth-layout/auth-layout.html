@@ -1,1 +1,23 @@
-<p>auth-layout works!</p>
+<div class="flex items-center justify-center min-h-screen p-4 bg-gray-50 dark:bg-dark-bg">
+    
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-[20%] -right-[10%] w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 w-full max-w-md overflow-hidden bg-white border border-gray-100 shadow-xl dark:bg-dark-surface rounded-2xl dark:border-dark-border">
+        
+        <div class="px-8 py-6 text-center border-b border-gray-100 bg-primary-50 dark:bg-primary-900/20 dark:border-dark-border">
+            <h1 class="text-2xl font-bold tracking-tight text-primary-600 dark:text-primary-400">TaskFlow</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your projects efficiently</p>
+        </div>
+
+        <div class="p-8">
+            <router-outlet></router-outlet>
+        </div>
+
+        <div class="px-8 py-4 text-center bg-gray-50 dark:bg-dark-bg/50">
+            <p class="text-xs text-gray-400 dark:text-gray-500">© 2024 TaskFlow. All rights reserved.</p>
+        </div>
+    </div>
+</div>

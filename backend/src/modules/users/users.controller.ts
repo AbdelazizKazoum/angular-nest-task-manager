@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dto';
 
@@ -20,19 +21,27 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const user = await this.usersService.createUser(createUserDto);
-    return new UserResponseDto(user);
+    return plainToClass(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Get()
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.usersService.findAllUsers();
-    return users.map((user) => new UserResponseDto(user));
+    return users.map((user) =>
+      plainToClass(UserResponseDto, user, {
+        excludeExtraneousValues: true,
+      }),
+    );
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserResponseDto> {
     const user = await this.usersService.findUserById(id);
-    return new UserResponseDto(user);
+    return plainToClass(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Patch(':id')
@@ -41,12 +50,18 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserResponseDto> {
     const user = await this.usersService.updateUser(id, updateUserDto);
-    return new UserResponseDto(user);
+    return plainToClass(UserResponseDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<UserResponseDto | null> {
     const user = await this.usersService.deleteUser(id);
-    return user ? new UserResponseDto(user) : null;
+    return user
+      ? plainToClass(UserResponseDto, user, {
+          excludeExtraneousValues: true,
+        })
+      : null;
   }
 }

@@ -1,7 +1,12 @@
-import { Exclude, Expose } from 'class-transformer';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { Exclude, Expose, Transform } from 'class-transformer';
+import { Types } from 'mongoose';
 
 export class UserResponseDto {
   @Expose()
+  @Transform(({ value }) =>
+    value instanceof Types.ObjectId ? value.toString() : value,
+  )
   _id!: string;
 
   @Expose()

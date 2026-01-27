@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
+import { User } from './entities/user.schema';
+import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly userRepository: UserRepository) {}
+
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    return this.userRepository.create(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAllUsers(): Promise<User[]> {
+    return this.userRepository.findAll({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findUserById(id: string): Promise<User> {
+    return this.userRepository.findOne({ _id: id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findUserByEmail(email: string): Promise<User> {
+    return this.userRepository.findByEmail(email);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findUserByEmailWithPassword(email: string): Promise<User> {
+    return this.userRepository.findByEmailWithPassword(email);
+  }
+
+  async existsByEmail(email: string): Promise<boolean> {
+    return this.userRepository.existsByEmail(email);
+  }
+
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    return this.userRepository.findOneAndUpdate({ _id: id }, updateUserDto);
+  }
+
+  async deleteUser(id: string): Promise<User | null> {
+    return this.userRepository.findOneAndDelete({ _id: id });
   }
 }

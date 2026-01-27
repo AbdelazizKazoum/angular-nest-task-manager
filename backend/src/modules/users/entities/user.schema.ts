@@ -4,7 +4,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import {
   AbstractDocument,
   AbstractSchemaFactory,
-} from '../../core/database/abstract.schema';
+} from '@/core/database/abstract.schema';
 
 @Schema({ collection: 'users', timestamps: true })
 export class User extends AbstractDocument {

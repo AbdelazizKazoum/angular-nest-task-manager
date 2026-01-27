@@ -9,7 +9,7 @@ export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    return this.userRepository.create(createUserDto);
+    return this.userRepository.create(createUserDto as Omit<User, '_id'>);
   }
 
   async findAllUsers(): Promise<User[]> {
@@ -33,7 +33,10 @@ export class UsersService {
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userRepository.findOneAndUpdate({ _id: id }, updateUserDto);
+    return this.userRepository.findOneAndUpdate(
+      { _id: id },
+      updateUserDto as Partial<User>,
+    );
   }
 
   async deleteUser(id: string): Promise<User | null> {

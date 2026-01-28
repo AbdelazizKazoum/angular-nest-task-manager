@@ -14,6 +14,31 @@ export class User extends AbstractDocument {
 
   @Prop({ required: true })
   password!: string;
+
+  @Prop({ trim: true })
+  phone?: string;
+
+  @Prop({ default: 'user', enum: ['user', 'admin', 'manager'] })
+  role!: string;
+
+  @Prop()
+  avatar?: string;
+
+  @Prop({ default: true })
+  isActive!: boolean;
+
+  @Prop({ type: Object })
+  preferences?: {
+    theme?: string;
+    notifications?: boolean;
+    language?: string;
+  };
+
+  @Prop()
+  department?: string;
+
+  @Prop({ type: [String] })
+  skills?: string[];
 }
 
 export const UserSchema = AbstractSchemaFactory(User);

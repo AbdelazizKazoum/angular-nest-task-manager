@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import type { AuthUser } from '../../common/types/authenticated-request.interface';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,18 +15,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<User | null> {
-    const user = await this.userService.findUserByEmailWithPassword(email);
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async validateUser(dto: LoginDto): Promise<User | null> {
+    const user = await this.userService.findUserByEmailWithPassword(dto.email);
+    if (user && (await bcrypt.compare(dto.password, user.password))) {
       const { password, ...result } = user;
       return result as User;
     }
     return null;
   }
 
-  login(user: User) {
-    const payload = { email: user.email, name: user.name, sub: user._id };
+  login(user: AuthUser) {
+    const payload = {
+      email: user.email,
+      name: user.name,
+      sub: user._id ?? user.id,
+    };
 
     return {
       access_token: this.jwtService.sign(payload),

@@ -18,8 +18,10 @@ export class AuthController {
     private userService: UserService,
   ) {}
 
-  @Post('auth/login')
+  @Post('/login')
   async login(@Body() body: { email: string; pass: string }) {
+    console.log('🚀 ~ AuthController ~ login ~ body:', body);
+
     const user = await this.authService.validateUser(body.email, body.pass);
     if (!user) {
       throw new UnauthorizedException();

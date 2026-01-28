@@ -4,6 +4,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.schema';
 import { JwtService } from '@nestjs/jwt';
+import { ref } from 'process';
 
 @Injectable()
 export class AuthService {
@@ -12,11 +13,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, pass: string): Promise<User | null> {
     const user = await this.userService.findUserByEmail(email);
     if (user && user.password === pass) {
       const { password, ...result } = user;
-      return result;
+      return result as User;
     }
     return null;
   }
@@ -26,6 +27,7 @@ export class AuthService {
 
     return {
       access_token: this.jwtService.sign(payload),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
   }
 

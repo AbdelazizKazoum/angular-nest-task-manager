@@ -9,7 +9,6 @@ export class UserRepository extends AbstractRepository<User> {
   protected readonly logger = new Logger(User.name);
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     @InjectModel(User.name)
     userModel: Model<User>,
   ) {

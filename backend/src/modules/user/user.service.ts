@@ -3,13 +3,20 @@ import { User } from './entities/user.schema';
 import { UserRepository } from './repositories/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    return this.userRepository.create(createUserDto as Omit<User, '_id'>);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    const userToCreate = {
+      ...createUserDto,
+      password: hashedPassword,
+    };
+    return this.userRepository.create(userToCreate as Omit<User, '_id'>);
   }
 
   async findAllUsers(): Promise<User[]> {

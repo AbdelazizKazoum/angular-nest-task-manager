@@ -32,6 +32,11 @@ export class AuthService {
     };
 
     return {
+      user: {
+        id: user._id ?? user.id,
+        email: user.email,
+        name: user.name,
+      },
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
@@ -45,6 +50,11 @@ export class AuthService {
     };
 
     return {
+      user: {
+        id: user._id ?? user.id,
+        email: user.email,
+        name: user.name,
+      },
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };

@@ -33,7 +33,7 @@ export class AuthController {
       secure: false, // Set to true in production with HTTPS
       sameSite: 'strict',
     });
-    return res.json({ access_token: tokens.access_token });
+    return res.json({ access_token: tokens.access_token, user: tokens.user });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,6 +56,6 @@ export class AuthController {
       secure: false, // Set to true in production with HTTPS
       sameSite: 'strict',
     });
-    return res.json({ access_token: tokens.access_token });
+    return res.json({ access_token: tokens.access_token, user: tokens.user });
   }
 }

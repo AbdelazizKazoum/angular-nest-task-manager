@@ -32,6 +32,10 @@ export class AuthService {
     // Check for existing token on app start
     const token = this.getToken();
     if (token) {
+      const user = this.getUserFromStorage();
+      if (user) {
+        this.userSubject.next(user);
+      }
       // Optionally validate token with backend (e.g., /auth/profile)
     }
   }
@@ -40,6 +44,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiBaseUrl}/auth/login`, credentials).pipe(
       tap((response) => {
         this.setToken(response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
         this.userSubject.next(response.user);
         this.router.navigate(['/dashboard']); // Redirect after login
       }),
@@ -52,6 +57,7 @@ export class AuthService {
 
   logout(): void {
     this.clearToken();
+    localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['auth/login']);
   }

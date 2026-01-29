@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout'; // Update path if needed
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout'; // Update path if needed
-import { authGuard } from './core/auth/auth.guard';
+import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   // 1. Redirect Root URL (localhost:4200) to Dashboard
@@ -15,7 +15,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [authGuard], //
+    canActivate: [AuthGuard], //
 
     children: [
       {

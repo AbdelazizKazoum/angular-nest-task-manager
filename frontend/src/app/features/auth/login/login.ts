@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,36 +10,55 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './login.html',
 })
-export class Login{
+export class Login {
   loginForm: FormGroup;
   isLoading = false;
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
-    // Initialize form with validations
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
+      rememberMe: [false],
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      console.log('Form Submitted', this.loginForm.value);
+      this.errorMessage = null;
 
-      // Simulate API call duration
-      setTimeout(() => {
-        this.isLoading = false;
-        // Navigate to dashboard here
-      }, 2000);
+      const credentials = {
+        email: this.loginForm.get('email')?.value,
+        password: this.loginForm.get('password')?.value,
+      };
+
+      this.authService.login(credentials).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.isLoading = false;
+
+          if (err.status === 401 || err.status === 403) {
+            this.errorMessage = 'Invalid email or password.';
+          } else {
+            this.errorMessage = 'Something went wrong. Please try again later.';
+          }
+
+          this.cdr.detectChanges();
+        },
+      });
     } else {
-      // Mark all fields as touched to show errors
       this.loginForm.markAllAsTouched();
     }
   }
 
-  // Helper for template to check error state quickly
   hasError(field: string): boolean {
     const control = this.loginForm.get(field);
     return !!(control?.invalid && (control.dirty || control.touched));

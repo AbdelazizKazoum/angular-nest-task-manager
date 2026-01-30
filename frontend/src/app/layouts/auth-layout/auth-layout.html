@@ -1,30 +1,49 @@
-<div class="flex items-center justify-center min-h-screen p-6 bg-[#F8FAFC] dark:bg-[#0f172a]">
-  <!-- Subtle Background Grid -->
+<div
+  class="flex items-center justify-center min-h-screen p-6 bg-slate-50 dark:bg-dark-bg relative overflow-hidden"
+>
+  <!-- PRO BACKGROUND: Dynamic Gradient Orbs -->
+  <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+    <!-- Orb 1: Top Left (Primary Blue/Indigo) -->
+    <div
+      class="absolute -top-[10%] -left-[10%] w-[40rem] h-[40rem] rounded-full bg-primary-200/40 dark:bg-primary-900/20 blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-pulse"
+    ></div>
+
+    <!-- Orb 2: Bottom Right (Cyan/Teal accent) -->
+    <div
+      class="absolute -bottom-[10%] -right-[10%] w-[40rem] h-[40rem] rounded-full bg-cyan-200/40 dark:bg-cyan-900/20 blur-[120px] mix-blend-multiply dark:mix-blend-screen animate-pulse"
+      style="animation-delay: 2s"
+    ></div>
+
+    <!-- Orb 3: Center Floating (Purple) -->
+    <div
+      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-purple-200/30 dark:bg-purple-900/10 blur-[100px] mix-blend-multiply dark:mix-blend-screen opacity-70"
+    ></div>
+  </div>
+
+  <!-- TECHNICAL GRID: Cleaner, wider spacing -->
   <div
-    class="absolute inset-0 z-0 opacity-30 pointer-events-none"
+    class="absolute inset-0 z-0 opacity-40 pointer-events-none"
     style="
-      background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
-      background-size: 24px 24px;
+      background-image: radial-gradient(#94a3b8 1px, transparent 1px);
+      background-size: 40px 40px;
     "
   ></div>
 
-  <!-- Main Card Container: Balanced 50/50 split -->
+  <!-- Main Card Container: Added Glassmorphism (bg-white/90 + backdrop-blur) -->
   <div
-    class="relative z-10 w-full max-w-4xl bg-white border border-gray-100 shadow-2xl dark:bg-[#1e293b] rounded-3xl dark:border-gray-800 overflow-hidden flex flex-col md:flex-row min-h-[550px]"
+    class="relative z-10 w-full max-w-4xl bg-white/90 backdrop-blur-xl border border-white/50 shadow-2xl dark:bg-dark-surface/90 rounded-3xl dark:border-dark-border overflow-hidden flex flex-col md:flex-row min-h-[550px]"
   >
-    <!-- LEFT SIDE: Form Area (50% Width) -->
-    <div
-      class="flex flex-col justify-center w-full p-8 md:w-1/2 lg:p-12 relative bg-white dark:bg-[#1e293b]"
-    >
+    <!-- LEFT SIDE: Form Area -->
+    <div class="flex flex-col justify-center w-full p-8 md:w-1/2 lg:p-12 relative">
       <!-- Mobile Logo -->
       <div class="md:hidden flex items-center mb-8 gap-2">
-        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+        <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
             />
           </svg>
         </div>
@@ -41,12 +60,14 @@
       </div>
     </div>
 
-    <!-- RIGHT SIDE: Visual Area (50% Width) -->
+    <!-- RIGHT SIDE: Visual Area -->
     <div
-      class="relative hidden md:flex md:w-1/2 bg-[#4F46E5] overflow-hidden flex-col justify-between p-12 text-white"
+      class="relative hidden md:flex md:w-1/2 bg-primary-900 overflow-hidden flex-col justify-between p-12 text-white"
     >
-      <!-- Background: Keeping the Deep Color with gradient -->
-      <div class="absolute inset-0 bg-gradient-to-tr from-[#4338ca] to-[#6366f1]"></div>
+      <!-- Background: Professional Gradient -->
+      <div
+        class="absolute inset-0 bg-gradient-to-tr from-primary-900 via-primary-800 to-primary-600"
+      ></div>
 
       <img
         src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
@@ -57,14 +78,15 @@
       <!-- BRAND LOGO -->
       <div class="relative z-20 flex items-center gap-3">
         <div
-          class="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur rounded-lg border border-white/10 shadow-sm"
+          class="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur rounded-lg border border-white/10 shadow-sm"
         >
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <!-- Task specific icon -->
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
             />
           </svg>
         </div>
@@ -74,10 +96,10 @@
       <!-- Visual Message -->
       <div class="relative z-20 mt-auto mb-6">
         <h2 class="text-3xl font-bold leading-tight tracking-tight mb-4">
-          Start your journey<br />with us.
+          Organize work,<br />achieve more.
         </h2>
-        <p class="text-indigo-100 text-sm leading-relaxed opacity-90 font-light max-w-xs">
-          Everything you need to manage your tasks, projects, and team in one place.
+        <p class="text-primary-100 text-sm leading-relaxed opacity-90 font-light max-w-xs">
+          Streamline your workflow with the platform built for high-performance teams.
         </p>
 
         <!-- Stats Pill -->
@@ -88,14 +110,14 @@
             <div class="h-6 w-6 rounded-full bg-white/30 border border-white/20"></div>
             <div class="h-6 w-6 rounded-full bg-white/30 border border-white/20"></div>
             <div
-              class="h-6 w-6 rounded-full bg-indigo-500 border border-white/20 flex items-center justify-center text-[8px] font-bold"
+              class="h-6 w-6 rounded-full bg-primary-500 border border-white/20 flex items-center justify-center text-[8px] font-bold"
             >
               +2k
             </div>
           </div>
           <div class="flex flex-col">
             <span class="text-[10px] font-semibold text-white uppercase tracking-wider"
-              >Trusted Users</span
+              >Active Teams</span
             >
           </div>
         </div>
@@ -103,10 +125,10 @@
 
       <!-- Decorative Elements -->
       <div
-        class="absolute -top-24 -right-24 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"
+        class="absolute -top-24 -right-24 w-80 h-80 bg-primary-400 opacity-10 rounded-full blur-3xl"
       ></div>
       <div
-        class="absolute -bottom-24 -left-24 w-60 h-60 bg-indigo-900 opacity-20 rounded-full blur-2xl"
+        class="absolute -bottom-24 -left-24 w-60 h-60 bg-blue-950 opacity-40 rounded-full blur-2xl"
       ></div>
     </div>
   </div>

@@ -1,23 +1,113 @@
-<div class="flex items-center justify-center min-h-screen p-4 bg-gray-50 dark:bg-dark-bg">
-    
-    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"></div>
-        <div class="absolute top-[20%] -right-[10%] w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
+<div class="flex items-center justify-center min-h-screen p-6 bg-[#F8FAFC] dark:bg-[#0f172a]">
+  <!-- Subtle Background Grid -->
+  <div
+    class="absolute inset-0 z-0 opacity-30 pointer-events-none"
+    style="
+      background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+    "
+  ></div>
+
+  <!-- Main Card Container: Balanced 50/50 split -->
+  <div
+    class="relative z-10 w-full max-w-4xl bg-white border border-gray-100 shadow-2xl dark:bg-[#1e293b] rounded-3xl dark:border-gray-800 overflow-hidden flex flex-col md:flex-row min-h-[550px]"
+  >
+    <!-- LEFT SIDE: Form Area (50% Width) -->
+    <div
+      class="flex flex-col justify-center w-full p-8 md:w-1/2 lg:p-12 relative bg-white dark:bg-[#1e293b]"
+    >
+      <!-- Mobile Logo -->
+      <div class="md:hidden flex items-center mb-8 gap-2">
+        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+        </div>
+        <span class="font-bold text-gray-900 dark:text-white text-lg">TaskFlow</span>
+      </div>
+
+      <!-- Content -->
+      <router-outlet></router-outlet>
+
+      <div class="mt-auto pt-6 text-center md:text-left">
+        <p class="text-[11px] text-gray-400 dark:text-gray-500 font-medium tracking-wide">
+          © 2024 TaskFlow Inc.
+        </p>
+      </div>
     </div>
 
-    <div class="relative z-10 w-full max-w-md overflow-hidden bg-white border border-gray-100 shadow-xl dark:bg-dark-surface rounded-2xl dark:border-dark-border">
-        
-        <div class="px-8 py-6 text-center border-b border-gray-100 bg-primary-50 dark:bg-primary-900/20 dark:border-dark-border">
-            <h1 class="text-2xl font-bold tracking-tight text-primary-600 dark:text-primary-400">TaskFlow</h1>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your projects efficiently</p>
-        </div>
+    <!-- RIGHT SIDE: Visual Area (50% Width) -->
+    <div
+      class="relative hidden md:flex md:w-1/2 bg-[#4F46E5] overflow-hidden flex-col justify-between p-12 text-white"
+    >
+      <!-- Background: Keeping the Deep Color with gradient -->
+      <div class="absolute inset-0 bg-gradient-to-tr from-[#4338ca] to-[#6366f1]"></div>
 
-        <div class="p-8">
-            <router-outlet></router-outlet>
-        </div>
+      <img
+        src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
+        class="absolute inset-0 object-cover w-full h-full opacity-10 mix-blend-overlay"
+        alt="Texture"
+      />
 
-        <div class="px-8 py-4 text-center bg-gray-50 dark:bg-dark-bg/50">
-            <p class="text-xs text-gray-400 dark:text-gray-500">© 2024 TaskFlow. All rights reserved.</p>
+      <!-- BRAND LOGO -->
+      <div class="relative z-20 flex items-center gap-3">
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur rounded-lg border border-white/10 shadow-sm"
+        >
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
         </div>
+        <span class="text-xl font-bold tracking-tight">TaskFlow</span>
+      </div>
+
+      <!-- Visual Message -->
+      <div class="relative z-20 mt-auto mb-6">
+        <h2 class="text-3xl font-bold leading-tight tracking-tight mb-4">
+          Start your journey<br />with us.
+        </h2>
+        <p class="text-indigo-100 text-sm leading-relaxed opacity-90 font-light max-w-xs">
+          Everything you need to manage your tasks, projects, and team in one place.
+        </p>
+
+        <!-- Stats Pill -->
+        <div
+          class="mt-8 px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-lg inline-flex items-center gap-4"
+        >
+          <div class="flex -space-x-2 overflow-hidden">
+            <div class="h-6 w-6 rounded-full bg-white/30 border border-white/20"></div>
+            <div class="h-6 w-6 rounded-full bg-white/30 border border-white/20"></div>
+            <div
+              class="h-6 w-6 rounded-full bg-indigo-500 border border-white/20 flex items-center justify-center text-[8px] font-bold"
+            >
+              +2k
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-[10px] font-semibold text-white uppercase tracking-wider"
+              >Trusted Users</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative Elements -->
+      <div
+        class="absolute -top-24 -right-24 w-80 h-80 bg-white opacity-5 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-24 -left-24 w-60 h-60 bg-indigo-900 opacity-20 rounded-full blur-2xl"
+      ></div>
     </div>
+  </div>
 </div>

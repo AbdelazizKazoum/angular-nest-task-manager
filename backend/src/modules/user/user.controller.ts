@@ -8,10 +8,12 @@ import {
   Delete,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dto';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -26,6 +28,7 @@ export class UserController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.userService.findAllUsers();

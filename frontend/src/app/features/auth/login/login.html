@@ -56,9 +56,9 @@
     </div>
   </div>
 
-  <!-- Global Error Message Alert -->
+  <!-- Global Error Message Alert (Access signal with parentheses) -->
   <div
-    *ngIf="errorMessage"
+    *ngIf="errorMessage()"
     class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
     role="alert"
   >
@@ -74,7 +74,7 @@
           d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
         />
       </svg>
-      {{ errorMessage }}
+      {{ errorMessage() }}
     </div>
   </div>
 
@@ -132,13 +132,14 @@
       >
     </div>
 
+    <!-- Submit Button (Access signal with parentheses) -->
     <button
       type="submit"
-      [disabled]="loginForm.invalid || isLoading"
+      [disabled]="loginForm.invalid || isLoading()"
       class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all mt-2"
     >
-      <span *ngIf="!isLoading">Sign in</span>
-      <svg *ngIf="isLoading" class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+      <span *ngIf="!isLoading()">Sign in</span>
+      <svg *ngIf="isLoading()" class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
         <circle
           class="opacity-25"
           cx="12"

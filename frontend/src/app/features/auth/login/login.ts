@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, signal } from '@angular/core'; // Import signal
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,13 +12,14 @@ import { AuthService } from '../../../core/auth/auth.service';
 })
 export class Login {
   loginForm: FormGroup;
-  isLoading = false;
-  errorMessage: string | null = null;
+
+  // Use Signals for local UI state
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,8 +30,9 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = null;
+      // Set signal values for loading state
+      this.isLoading.set(true);
+      this.errorMessage.set(null);
 
       const credentials = {
         email: this.loginForm.get('email')?.value,
@@ -39,19 +41,18 @@ export class Login {
 
       this.authService.login(credentials).subscribe({
         next: () => {
-          this.isLoading = false;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
+          // Router navigation happens in AuthService, view updates automatically
         },
         error: (err) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
 
+          // Handle error messaging
           if (err.status === 401 || err.status === 403) {
-            this.errorMessage = 'Invalid email or password.';
+            this.errorMessage.set('Invalid email or password.');
           } else {
-            this.errorMessage = 'Something went wrong. Please try again later.';
+            this.errorMessage.set('Something went wrong. Please try again later.');
           }
-
-          this.cdr.detectChanges();
         },
       });
     } else {

@@ -11,6 +11,12 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
 
+  {
+    path: 'auth',
+    redirectTo: 'auth/login',
+    pathMatch: 'full',
+  },
+
   // 2. App Routes (Wrapped in MainLayout)
   {
     path: '',

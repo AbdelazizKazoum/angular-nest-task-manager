@@ -1,36 +1,74 @@
 <!-- SIDEBAR -->
+<!-- Note: overflow-hidden prevents horizontal scrollbars during transition -->
 <aside
-  class="flex-col h-full hidden w-64 transition-all duration-300 bg-white border-r border-gray-100 dark:border-dark-border dark:bg-dark-surface md:flex"
+  class="flex-col h-full fixed left-0 top-0 z-30 transition-all duration-300 ease-in-out bg-white border-r border-gray-100 overflow-hidden dark:border-dark-border dark:bg-dark-surface md:relative md:flex"
+  [class.w-64]="
+    (!sidebarService.isCollapsed() && !isMobile()) || (sidebarService.isOpen() && isMobile())
+  "
+  [class.w-20]="sidebarService.isCollapsed() && !isMobile()"
+  [class.-translate-x-full]="!sidebarService.isOpen() && isMobile()"
+  [class.translate-x-0]="sidebarService.isOpen() || !isMobile()"
 >
   <!-- Logo Area -->
-  <div class="flex items-center h-24 px-8">
+  <div
+    class="flex items-center h-24 shrink-0 transition-all duration-300"
+    [class.px-8]="!sidebarService.isCollapsed()"
+    [class.justify-center]="sidebarService.isCollapsed()"
+    [class.px-0]="sidebarService.isCollapsed()"
+  >
     <div class="flex items-center gap-3 text-primary-600 dark:text-primary-400">
-      <div class="flex items-center justify-center w-8 h-8 text-white rounded-lg bg-primary-600">
+      <!-- Logo Icon -->
+      <div
+        class="flex items-center justify-center shrink-0 w-8 h-8 text-white rounded-lg bg-primary-600"
+      >
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
             d="M13 10V3L4 14h7v7l9-11h-7z"
-          />
+          ></path>
         </svg>
       </div>
-      <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">TaskFlow</span>
+      <!-- Logo Text (Absolute to prevent layout shift during hide) -->
+      <span
+        *ngIf="!sidebarService.isCollapsed()"
+        class="text-xl font-bold tracking-tight text-gray-900 whitespace-nowrap dark:text-white"
+      >
+        TaskFlow
+      </span>
     </div>
   </div>
 
   <!-- Navigation -->
-  <nav class="flex-1 px-5 py-4 space-y-2 overflow-y-auto">
-    <!-- Section: HOME -->
-    <div class="px-3 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase">Home</div>
+  <nav
+    class="flex-1 py-4 space-y-2 overflow-y-auto overflow-x-hidden"
+    [class.px-5]="!sidebarService.isCollapsed()"
+    [class.px-2]="sidebarService.isCollapsed()"
+  >
+    <!-- Section Header: HOME -->
+    <div
+      *ngIf="!sidebarService.isCollapsed()"
+      class="px-3 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase whitespace-nowrap"
+    >
+      Home
+    </div>
+    <!-- Separator for Collapsed Mode instead of Text -->
+    <div
+      *ngIf="sidebarService.isCollapsed()"
+      class="h-px mx-4 my-4 bg-gray-200 dark:bg-gray-700"
+    ></div>
 
+    <!-- Dashboard Link -->
     <a
       routerLink="/dashboard"
       routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 shadow-sm"
-      class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      [class.gap-3]="!sidebarService.isCollapsed()"
+      [class.justify-center]="sidebarService.isCollapsed()"
     >
       <svg
-        class="w-5 h-5 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
+        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -42,19 +80,27 @@
           d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
         ></path>
       </svg>
-      Dashboard
+      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">Dashboard</span>
     </a>
 
-    <!-- Section: APP -->
-    <div class="px-3 mt-6 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase">App</div>
+    <!-- APP Section -->
+    <div
+      *ngIf="!sidebarService.isCollapsed()"
+      class="px-3 mt-6 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase whitespace-nowrap"
+    >
+      App
+    </div>
 
+    <!-- My Tasks Link -->
     <a
       routerLink="/tasks"
       routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 shadow-sm"
-      class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      [class.gap-3]="!sidebarService.isCollapsed()"
+      [class.justify-center]="sidebarService.isCollapsed()"
     >
       <svg
-        class="w-5 h-5 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
+        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -66,15 +112,17 @@
           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
         ></path>
       </svg>
-      My Tasks
+      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">My Tasks</span>
     </a>
 
-    <!-- Placeholder link to match image variety -->
+    <!-- Calendar Link -->
     <a
-      class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 transition-all cursor-pointer rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all cursor-pointer rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+      [class.gap-3]="!sidebarService.isCollapsed()"
+      [class.justify-center]="sidebarService.isCollapsed()"
     >
       <svg
-        class="w-5 h-5 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
+        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -86,13 +134,22 @@
           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
         ></path>
       </svg>
-      Calendar
+      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">Calendar</span>
     </a>
   </nav>
 
   <!-- Bottom User Card -->
-  <div class="p-5">
-    <div class="p-4 bg-gray-50 dark:bg-gray-800/60 rounded-2xl">
+  <!-- We use distinct layouts for expanded/collapsed to ensure pro styling for both -->
+  <div
+    class="border-t border-gray-100 dark:border-gray-800 transition-all duration-300"
+    [class.p-4]="!sidebarService.isCollapsed()"
+    [class.p-2]="sidebarService.isCollapsed()"
+  >
+    <!-- === OPTION 1: EXPANDED STATE (Detailed Card) === -->
+    <div
+      *ngIf="!sidebarService.isCollapsed()"
+      class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl animate-fade-in"
+    >
       <div class="flex items-center gap-3 mb-4">
         <img
           src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff"
@@ -109,7 +166,7 @@
         class="flex items-center justify-between gap-2 pt-3 border-t border-gray-200 dark:border-gray-700"
       >
         <button
-          class="flex items-center justify-center flex-1 gap-2 py-2 text-xs font-medium text-gray-600 transition-all bg-white rounded-lg shadow-sm hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:hover:text-white"
+          class="flex items-center justify-center flex-1 gap-2 py-2 text-xs font-medium text-gray-600 transition-all bg-white rounded-lg shadow-sm hover:text-gray-900 border border-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:text-white"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -127,11 +184,9 @@
           </svg>
           Setting
         </button>
-
-        <!-- Log out Button -->
         <button
           (click)="openLogoutModal()"
-          class="flex items-center justify-center flex-1 gap-2 py-2 text-xs font-medium text-gray-600 transition-all bg-white rounded-lg shadow-sm hover:text-red-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:text-red-400"
+          class="flex items-center justify-center flex-1 gap-2 py-2 text-xs font-medium text-gray-600 transition-all bg-white rounded-lg shadow-sm hover:text-red-600 border border-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:text-red-400"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -145,6 +200,74 @@
         </button>
       </div>
     </div>
+
+    <!-- === OPTION 2: COLLAPSED STATE (Vertical Icons) === -->
+    <div *ngIf="sidebarService.isCollapsed()" class="flex flex-col items-center gap-4 py-2">
+      <!-- Avatar (Centered & Tooltip-ready) -->
+      <div class="relative group cursor-pointer">
+        <img
+          src="https://ui-avatars.com/api/?name=Jane+Doe&background=0D8ABC&color=fff"
+          alt="User"
+          class="w-10 h-10 border-2 border-white rounded-full shadow-md hover:ring-2 hover:ring-primary-100 transition-all dark:border-gray-700"
+        />
+        <!-- Optional Tooltip -->
+        <div
+          class="absolute left-14 top-1 z-50 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
+        >
+          Jane Doe
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-8 h-px bg-gray-200 dark:bg-gray-700"></div>
+
+      <!-- Settings Icon (Large & Clean) -->
+      <button
+        class="group flex items-center justify-center p-3 text-gray-500 transition-all rounded-xl hover:bg-gray-100 hover:text-primary-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+        title="Settings"
+      >
+        <svg
+          class="w-6 h-6 transition-transform group-hover:rotate-45"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+      </button>
+
+      <!-- Logout Icon (Large & Clean) -->
+      <button
+        (click)="openLogoutModal()"
+        class="group flex items-center justify-center p-3 text-gray-500 transition-all rounded-xl hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+        title="Sign out"
+      >
+        <svg
+          class="w-6 h-6 transition-transform group-hover:translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
 
   <!-- Logout Confirmation Modal -->
@@ -156,3 +279,10 @@
   >
   </app-logout-modal>
 </aside>
+
+<!-- Overlay for mobile -->
+<div
+  *ngIf="sidebarService.isOpen() && isMobile()"
+  class="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden"
+  (click)="sidebarService.closeSidebar()"
+></div>

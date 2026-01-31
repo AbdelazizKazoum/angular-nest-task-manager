@@ -3,9 +3,12 @@
   class="sticky top-0 z-20 flex items-center justify-between h-24 px-8 bg-white/80 backdrop-blur-md dark:bg-dark-surface/90"
 >
   <!-- Left: Title & Search -->
-  <div class="flex items-center flex-1 gap-8">
+  <div class="flex items-center flex-1 gap-4">
     <!-- Mobile Toggle (Visible on small screens) -->
-    <button class="text-gray-500 md:hidden hover:text-gray-700 dark:text-gray-400">
+    <button
+      (click)="toggleSidebar()"
+      class="text-gray-500 md:hidden hover:text-gray-700 dark:text-gray-400"
+    >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
@@ -16,7 +19,51 @@
       </svg>
     </button>
 
-    <h2 class="hidden text-2xl font-bold tracking-tight text-gray-900 md:block dark:text-white">
+    <!-- PRO DESKTOP COLLAPSE TOGGLE -->
+    <button
+      (click)="toggleCollapsed()"
+      [title]="sidebarService.isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+      class="hidden md:flex items-center justify-center p-2 text-gray-500 transition-all duration-200 rounded-lg group hover:bg-gray-100 hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+    >
+      <!-- Icon: Shows when Sidebar is OPEN (Click to Collapse) -->
+      <!-- Visual: A bar on the left, and an arrow pointing LEFT (closing) -->
+      <svg
+        *ngIf="!sidebarService.isCollapsed()"
+        class="w-5 h-5 transition-transform group-hover:-translate-x-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+        />
+      </svg>
+
+      <!-- Icon: Shows when Sidebar is COLLAPSED (Click to Expand) -->
+      <!-- Visual: A bar on the left, and an arrow pointing RIGHT (opening) -->
+      <svg
+        *ngIf="sidebarService.isCollapsed()"
+        class="w-5 h-5 transition-transform group-hover:translate-x-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 5l7 7-7 7M5 5l7 7-7 7"
+        />
+      </svg>
+    </button>
+
+    <!-- Dashboard Title -->
+    <h2
+      class="hidden text-2xl font-bold tracking-tight text-gray-900 md:block dark:text-white ml-2"
+    >
       Dashboard
     </h2>
 

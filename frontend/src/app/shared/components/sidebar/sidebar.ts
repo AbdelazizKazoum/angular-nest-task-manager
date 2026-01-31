@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, HostListener } from '@angular/core'; // Add HostListener
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 // 👇 Clean Imports
 import { AuthService } from '@core/auth/auth.service';
 import { LogoutModal } from '@shared/components/modals/logout-modal/logout-modal';
+import { SidebarService } from '@shared/services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,10 +15,24 @@ import { LogoutModal } from '@shared/components/modals/logout-modal/logout-modal
 })
 export class Sidebar {
   authService = inject(AuthService);
+  sidebarService = inject(SidebarService);
 
   // Modal State Signals
   showLogoutModal = signal(false);
   isLoggingOut = signal(false);
+
+  // Screen size signal
+  isMobile = signal(false);
+
+  constructor() {
+    // Set initial value
+    this.isMobile.set(window.innerWidth < 768);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobile.set(window.innerWidth < 768);
+  }
 
   openLogoutModal() {
     this.showLogoutModal.set(true);

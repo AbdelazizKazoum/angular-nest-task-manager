@@ -127,7 +127,10 @@
           </svg>
           Setting
         </button>
+
+        <!-- Log out Button -->
         <button
+          (click)="openLogoutModal()"
           class="flex items-center justify-center flex-1 gap-2 py-2 text-xs font-medium text-gray-600 transition-all bg-white rounded-lg shadow-sm hover:text-red-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:text-red-400"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,4 +146,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Logout Confirmation Modal -->
+  <app-logout-modal
+    [isOpen]="showLogoutModal()"
+    [isLoading]="isLoggingOut()"
+    (close)="closeLogoutModal()"
+    (confirm)="handleLogoutConfirm()"
+  >
+  </app-logout-modal>
 </aside>

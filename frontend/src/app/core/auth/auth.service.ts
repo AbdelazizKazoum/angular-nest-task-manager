@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError, finalize } from 'rxjs';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -55,11 +55,16 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    this.clearToken();
-    localStorage.removeItem('user');
-    this.userSubject.next(null);
-    this.router.navigate(['auth/login']);
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.apiBaseUrl}/auth/logout`, {}).pipe(
+      // finalize runs whether the request succeeds or fails
+      finalize(() => {
+        this.clearToken();
+        localStorage.removeItem('user');
+        this.userSubject.next(null);
+        this.router.navigate(['auth/login']);
+      }),
+    );
   }
 
   refreshToken(): Observable<AuthResponse> {

@@ -21,22 +21,30 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error) => {
-        if (error.status === 401) {
+        // Fix: Check if error is 401 AND the URL is NOT the login endpoint
+        if (error.status === 401 && !req.url.includes('/auth/login')) {
           // Token expired—try refresh
           return this.authService.refreshToken().pipe(
-            switchMap(() => {
-              const newToken = this.authService.getToken();
+            switchMap((response) => {
+              // Note: refreshToken returns Use object, ensure you grab the token correctly
+              // Based on your AuthService, refreshToken populates localstorage,
+              // but we need the token string explicitly here if possible,
+              // or just grab it from storage again.
+              const newToken = response.access_token || this.authService.getToken();
+
               const retryReq = req.clone({
                 setHeaders: { Authorization: `Bearer ${newToken}` },
               });
               return next.handle(retryReq);
             }),
-            catchError(() => {
+            catchError((refreshErr) => {
               this.authService.logout(); // Logout on refresh failure
-              return throwError(() => error);
+              return throwError(() => refreshErr);
             }),
           );
         }
+
+        // If it's a login error (401 on /login) or any other error, pass it to the component
         return throwError(() => error);
       }),
     );

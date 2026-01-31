@@ -6,7 +6,7 @@ import { provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { environment } from '@env/environment';
 import { API_BASE_URL } from '@core/auth/auth.service';
-import { AuthInterceptor } from '@core/auth/auth.interceptor-interceptor';
+import { AuthInterceptor } from '@core/auth/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -18,7 +18,7 @@ export class Register {
       fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      terms: [false, [Validators.requiredTrue]] // Checkbox must be checked
+      terms: [false, [Validators.requiredTrue]], // Checkbox must be checked
     });
   }
 

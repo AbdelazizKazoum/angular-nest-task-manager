@@ -1,8 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { LogoutModal } from '../modals/logout-modal/logout-modal'; // Import the Modal
+
+// 👇 Clean Imports
+import { AuthService } from '@core/auth/auth.service';
+import { LogoutModal } from '@shared/components/modals/logout-modal/logout-modal';
 
 @Component({
   selector: 'app-sidebar',

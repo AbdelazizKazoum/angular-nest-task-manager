@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for *ngIf works
-import { ThemeService } from '../../../core/theme/theme.service.ts';
+import { ThemeService } from '@core/theme/theme.service.ts';
 
 @Component({
   selector: 'app-navbar',

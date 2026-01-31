@@ -13,4 +13,12 @@
       <router-outlet></router-outlet>
     </main>
   </div>
+
+  <!-- Global Logout Modal (Rendered at root level for full overlay) -->
+  <app-logout-modal
+    [isOpen]="sidebarService.showLogoutModal()"
+    [isLoading]="sidebarService.isLoggingOut()"
+    (close)="sidebarService.closeLogoutModal()"
+    (confirm)="handleLogoutConfirm()"
+  ></app-logout-modal>
 </div>

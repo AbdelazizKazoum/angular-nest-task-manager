@@ -1,31 +1,25 @@
-import { Component, inject, signal, HostListener } from '@angular/core'; // Add HostListener
+import { Component, inject, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 // 👇 Clean Imports
 import { AuthService } from '@core/auth/auth.service';
-import { LogoutModal } from '@shared/components/modals/logout-modal/logout-modal';
 import { SidebarService } from '@shared/services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, LogoutModal],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
 })
 export class Sidebar {
   authService = inject(AuthService);
   sidebarService = inject(SidebarService);
 
-  // Modal State Signals
-  showLogoutModal = signal(false);
-  isLoggingOut = signal(false);
-
   // Screen size signal
   isMobile = signal(false);
 
   constructor() {
-    // Set initial value
     this.isMobile.set(window.innerWidth < 768);
   }
 
@@ -34,29 +28,23 @@ export class Sidebar {
     this.isMobile.set(window.innerWidth < 768);
   }
 
+  // Delegate to service
   openLogoutModal() {
-    this.showLogoutModal.set(true);
-  }
-
-  closeLogoutModal() {
-    this.showLogoutModal.set(false);
+    this.sidebarService.openLogoutModal();
   }
 
   handleLogoutConfirm() {
-    this.isLoggingOut.set(true);
+    this.sidebarService.setLoggingOut(true);
 
-    // Call the actual backend logout endpoint
     this.authService.logout().subscribe({
       next: () => {
-        // Cleaning up state happens in authService.finalize()
-        this.isLoggingOut.set(false);
-        this.showLogoutModal.set(false);
+        this.sidebarService.setLoggingOut(false);
+        this.sidebarService.closeLogoutModal();
       },
       error: (err) => {
-        // Even if error happens, authService handles the redirection
         console.error('Logout failed on server', err);
-        this.isLoggingOut.set(false);
-        this.showLogoutModal.set(false);
+        this.sidebarService.setLoggingOut(false);
+        this.sidebarService.closeLogoutModal();
       },
     });
   }

@@ -1,26 +1,40 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { ProjectRepository } from './repositories/project.repository';
+import { Types } from 'mongoose';
+import { Project } from './entities/project.schema';
 
 @Injectable()
 export class ProjectService {
-  create(createProjectDto: CreateProjectDto) {
-    return 'This action adds a new project';
+  constructor(private readonly projectRepository: ProjectRepository) {}
+
+  async create(createProjectDto: CreateProjectDto) {
+    return this.projectRepository.create({
+      ...createProjectDto,
+      owner_id: new Types.ObjectId(createProjectDto.owner_id),
+    } as Omit<Project, '_id'>);
   }
 
-  findAll() {
-    return `This action returns all project`;
+  async findAll() {
+    return this.projectRepository.findAll({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findOne(id: string) {
+    return this.projectRepository.findOne({ _id: new Types.ObjectId(id) });
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: string, updateProjectDto: UpdateProjectDto) {
+    return this.projectRepository.findOneAndUpdate(
+      { _id: new Types.ObjectId(id) },
+      updateProjectDto,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async remove(id: string) {
+    return this.projectRepository.findOneAndDelete({
+      _id: new Types.ObjectId(id),
+    });
   }
 }

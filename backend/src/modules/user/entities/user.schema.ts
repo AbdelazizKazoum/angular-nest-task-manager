@@ -27,18 +27,18 @@ export class User extends AbstractDocument {
   @Prop({ default: true })
   isActive!: boolean;
 
-  @Prop({ type: Object })
-  preferences?: {
-    theme?: string;
-    notifications?: boolean;
-    language?: string;
-  };
+  // @Prop({ type: Object })
+  // preferences?: {
+  //   theme?: string;
+  //   notifications?: boolean;
+  //   language?: string;
+  // };
 
-  @Prop()
-  department?: string;
+  // @Prop()
+  // department?: string;
 
-  @Prop({ type: [String] })
-  skills?: string[];
+  // @Prop({ type: [String] })
+  // skills?: string[];
 }
 
 export const UserSchema = AbstractSchemaFactory(User);

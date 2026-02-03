@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   Controller,
   Get,
@@ -10,6 +7,7 @@ import {
   UnauthorizedException,
   UseGuards,
   Res,
+  HttpStatus, // Import HttpStatus
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
@@ -31,10 +29,12 @@ export class AuthController {
     }
 
     const tokens = this.authService.login(user);
+    // Explicitly setting path to '/' ensures we can clear it from anywhere later
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: false, // Set to true in production with HTTPS
       sameSite: 'strict',
+      path: '/', // This path is important for clearing the cookie
     });
     return res.json({ access_token: tokens.access_token, user: tokens.user });
   }
@@ -56,9 +56,27 @@ export class AuthController {
     const tokens = this.authService.refresh(user);
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
+      secure: false, // Set to true in production
       sameSite: 'strict',
+      path: '/',
     });
     return res.json({ access_token: tokens.access_token, user: tokens.user });
+  }
+
+  // 👇 ADD THIS METHOD
+  @Post('/logout')
+  logout(@Res() res: Response) {
+    // We clear the cookie by setting it to empty and expiring it immediately
+    // IMPORTANT: The options (httpOnly, secure, path) must match exactly what was used to create it
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      path: '/',
+    });
+
+    return res
+      .status(HttpStatus.OK)
+      .json({ message: 'Logged out successfully' });
   }
 }

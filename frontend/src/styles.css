@@ -1,26 +1,23 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-/* 1. FORCE DARK MODE TO USE CLASS STRATEGY */
-/* This overrides the default 'system' preference and looks for the .dark class */
 @variant dark (&:where(.dark, .dark *));
 
-/* 2. DEFINE YOUR THEME VARIABLES HERE (Native v4 way) */
-/* This replaces the 'extend' part of your tailwind.config.js */
 @theme {
-  /* Your Primary Colors */
-  --color-primary-50: #eef2ff;
-  --color-primary-100: #e0e7ff;
-  --color-primary-500: #6366f1;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
+  /* BRAND: "Focus Blue" - A clean, productive color scale */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb; /* Main Action Color */
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a; /* Deep Backgrounds */
+  --color-primary-950: #172554;
 
-  /* Your Dark Mode Backgrounds */
-  --color-dark-bg: #0f172a;
-  --color-dark-surface: #1e293b;
-  --color-dark-border: #334155;
+  /* DARK MODE: Deep Slate for high contrast text */
+  --color-dark-bg: #020617; /* The screen background */
+  --color-dark-surface: #0f172a; /* The card background */
+  --color-dark-border: #1e293b; /* Borders in dark mode */
 }
-
-/* 3. OPTIONAL: CONFIG LINK */
-/* If you still really want to keep the JS file, you can link it, 
-   but the @theme block above is better for v4. */
-/* @config "../tailwind.config.js"; */

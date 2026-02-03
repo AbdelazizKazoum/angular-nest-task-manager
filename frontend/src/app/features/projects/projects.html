@@ -1,0 +1,224 @@
+<div class="h-full w-full bg-gray-50 p-6 overflow-y-auto">
+  <!-- Header -->
+  <div class="mb-6 flex flex-col gap-1">
+    <h1 class="text-xl font-bold text-gray-800">Project List</h1>
+    <div class="flex items-center gap-2 text-sm text-gray-500">
+      <span>Admin Dashboard</span>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        ></path>
+      </svg>
+      <span class="text-blue-600">Project List</span>
+    </div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <!-- Toolbar -->
+    <div
+      class="p-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100"
+    >
+      <!-- Search & Filters -->
+      <div class="flex items-center gap-4 w-full sm:w-auto">
+        <div class="relative w-full sm:w-64">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </span>
+          <input
+            [(ngModel)]="searchQuery"
+            type="text"
+            placeholder="Search Project"
+            class="w-full h-10 pl-10 pr-4 rounded-lg border-none bg-gray-50 focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400"
+          />
+        </div>
+        <button class="p-2 text-gray-400 hover:text-gray-600 bg-gray-50 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Context Actions -->
+      <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+        <div
+          *ngIf="selectedProjects.size > 0"
+          class="flex items-center gap-2 text-sm text-blue-600 font-medium"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <span>{{ selectedProjects.size }} Selected</span>
+        </div>
+
+        <button
+          class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            ></path>
+          </svg>
+          ADD PROJECT
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr
+            class="border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+          >
+            <th class="p-4 w-12 text-center">
+              <input
+                type="checkbox"
+                [checked]="isAllSelected()"
+                (change)="toggleAll($event)"
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+              />
+            </th>
+            <th class="p-4">Name</th>
+            <th class="p-4">Position</th>
+            <th class="p-4">Department</th>
+            <th class="p-4">Email</th>
+            <th class="p-4">Phone</th>
+            <th class="p-4">Status</th>
+            <th class="p-4 text-center">Edit</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm text-gray-700">
+          <tr
+            *ngFor="let project of filteredProjects"
+            class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none cursor-pointer"
+            [class.bg-blue-50]="isSelected(project.id)"
+            (click)="toggleProject(project.id)"
+          >
+            <td class="p-4 text-center">
+              <input
+                type="checkbox"
+                [checked]="isSelected(project.id)"
+                (click)="$event.stopPropagation(); toggleProject(project.id)"
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+              />
+            </td>
+
+            <td class="p-4">
+              <div class="flex items-center gap-3">
+                <img
+                  [src]="project.leadAvatar"
+                  alt=""
+                  class="w-10 h-10 rounded-full object-cover"
+                />
+                <div class="font-medium text-gray-900">{{ project.lead }}</div>
+              </div>
+            </td>
+
+            <td class="p-4 text-gray-500">{{ project.name }}</td>
+            <td class="p-4 text-gray-500">{{ project.category }}</td>
+            <td class="p-4 text-gray-500">{{ project.contactEmail }}</td>
+            <td class="p-4 text-gray-500">{{ project.deadline }}</td>
+
+            <td class="p-4">
+              <span
+                [className]="
+                  'px-3 py-1 rounded-md text-xs font-medium ' + getStatusColor(project.status)
+                "
+              >
+                {{ project.status }}
+              </span>
+            </td>
+
+            <td class="p-4">
+              <div
+                class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <button
+                  class="p-1.5 hover:bg-white rounded-md text-gray-400 hover:text-blue-600 hover:shadow-sm"
+                  (click)="$event.stopPropagation()"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    ></path>
+                  </svg>
+                </button>
+                <button
+                  class="p-1.5 hover:bg-white rounded-md text-gray-400 hover:text-red-600 hover:shadow-sm"
+                  (click)="$event.stopPropagation()"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Example of Expanded Selected Row look (optional, but matching 'blue border' idea if I wanted to go further) -->
+          <!-- Currently simple row selection highlights with blue bg which is standard for lists -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div
+      class="p-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500"
+    >
+      <div>1-9 of 48</div>
+      <div class="flex items-center gap-2">
+        <button class="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50" disabled>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            ></path>
+          </svg>
+        </button>
+        <button class="p-2 hover:bg-gray-100 rounded-lg">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

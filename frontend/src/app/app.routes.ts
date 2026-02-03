@@ -32,6 +32,10 @@ export const routes: Routes = [
         path: 'tasks',
         loadComponent: () => import('@features/tasks/task-page/task-page').then((m) => m.TaskPage),
       },
+      {
+        path: 'projects',
+        loadComponent: () => import('@features/projects/projects').then((m) => m.Projects),
+      },
     ],
   },
 

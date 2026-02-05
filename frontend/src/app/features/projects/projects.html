@@ -1,223 +1,240 @@
-<div class="h-full w-full bg-gray-50 p-6 overflow-y-auto">
-  <!-- Header -->
-  <div class="mb-6 flex flex-col gap-1">
-    <h1 class="text-xl font-bold text-gray-800">Project List</h1>
-    <div class="flex items-center gap-2 text-sm text-gray-500">
-      <span>Admin Dashboard</span>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5l7 7-7 7"
-        ></path>
-      </svg>
-      <span class="text-blue-600">Project List</span>
-    </div>
-  </div>
-
-  <!-- Main Card -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-    <!-- Toolbar -->
-    <div
-      class="p-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100"
-    >
-      <!-- Search & Filters -->
-      <div class="flex items-center gap-4 w-full sm:w-auto">
-        <div class="relative w-full sm:w-64">
-          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
-          </span>
-          <input
-            [(ngModel)]="searchQuery"
-            type="text"
-            placeholder="Search Project"
-            class="w-full h-10 pl-10 pr-4 rounded-lg border-none bg-gray-50 focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400"
-          />
-        </div>
-        <button class="p-2 text-gray-400 hover:text-gray-600 bg-gray-50 rounded-lg">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-            ></path>
+<div class="min-h-full bg-gray-50/50 p-6 md:p-8">
+  <div class="max-w-7xl mx-auto space-y-6">
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Projects</h1>
+        <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
+          <span>Dashboard</span>
+          <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+          <span class="font-medium text-gray-900">All Projects</span>
+        </div>
       </div>
-
-      <!-- Context Actions -->
-      <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-        <div
-          *ngIf="selectedProjects.size > 0"
-          class="flex items-center gap-2 text-sm text-blue-600 font-medium"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-          <span>{{ selectedProjects.size }} Selected</span>
-        </div>
-
+      <div>
         <button
-          class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md focus:ring-4 focus:ring-gray-200"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4v16m8-8H4"
-            ></path>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          ADD PROJECT
+          New Project
         </button>
       </div>
     </div>
 
-    <!-- Table Container -->
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr
-            class="border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            <th class="p-4 w-12 text-center">
-              <input
-                type="checkbox"
-                [checked]="isAllSelected()"
-                (change)="toggleAll($event)"
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
-              />
-            </th>
-            <th class="p-4">Name</th>
-            <th class="p-4">Position</th>
-            <th class="p-4">Department</th>
-            <th class="p-4">Email</th>
-            <th class="p-4">Phone</th>
-            <th class="p-4">Status</th>
-            <th class="p-4 text-center">Edit</th>
-          </tr>
-        </thead>
-        <tbody class="text-sm text-gray-700">
-          <tr
-            *ngFor="let project of filteredProjects"
-            class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none cursor-pointer"
-            [class.bg-blue-50]="isSelected(project.id)"
-            (click)="toggleProject(project.id)"
-          >
-            <td class="p-4 text-center">
-              <input
-                type="checkbox"
-                [checked]="isSelected(project.id)"
-                (click)="$event.stopPropagation(); toggleProject(project.id)"
-                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
-              />
-            </td>
-
-            <td class="p-4">
-              <div class="flex items-center gap-3">
-                <img
-                  [src]="project.leadAvatar"
-                  alt=""
-                  class="w-10 h-10 rounded-full object-cover"
-                />
-                <div class="font-medium text-gray-900">{{ project.lead }}</div>
-              </div>
-            </td>
-
-            <td class="p-4 text-gray-500">{{ project.name }}</td>
-            <td class="p-4 text-gray-500">{{ project.category }}</td>
-            <td class="p-4 text-gray-500">{{ project.contactEmail }}</td>
-            <td class="p-4 text-gray-500">{{ project.deadline }}</td>
-
-            <td class="p-4">
-              <span
-                [className]="
-                  'px-3 py-1 rounded-md text-xs font-medium ' + getStatusColor(project.status)
-                "
-              >
-                {{ project.status }}
-              </span>
-            </td>
-
-            <td class="p-4">
-              <div
-                class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <button
-                  class="p-1.5 hover:bg-white rounded-md text-gray-400 hover:text-blue-600 hover:shadow-sm"
-                  (click)="$event.stopPropagation()"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                    ></path>
-                  </svg>
-                </button>
-                <button
-                  class="p-1.5 hover:bg-white rounded-md text-gray-400 hover:text-red-600 hover:shadow-sm"
-                  (click)="$event.stopPropagation()"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-
-          <!-- Example of Expanded Selected Row look (optional, but matching 'blue border' idea if I wanted to go further) -->
-          <!-- Currently simple row selection highlights with blue bg which is standard for lists -->
-        </tbody>
-      </table>
+    <!-- Stats Overview (Optional Modern Touch) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 font-medium">Total Projects</div>
+          <div class="text-2xl font-bold text-gray-900">{{ projects.length }}</div>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 font-medium">Active Projects</div>
+          <div class="text-2xl font-bold text-gray-900">{{ projects.length }}</div>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="p-3 bg-purple-50 text-purple-600 rounded-lg">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-sm text-gray-500 font-medium">Avg. Duration</div>
+          <div class="text-2xl font-bold text-gray-900">12 Days</div>
+        </div>
+      </div>
     </div>
 
-    <!-- Pagination -->
-    <div
-      class="p-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500"
-    >
-      <div>1-9 of 48</div>
-      <div class="flex items-center gap-2">
-        <button class="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50" disabled>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            ></path>
-          </svg>
-        </button>
-        <button class="p-2 hover:bg-gray-100 rounded-lg">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            ></path>
-          </svg>
-        </button>
+    <!-- Main Content Card -->
+    <div class="bg-white rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 flex flex-col">
+      
+      <!-- Toolbar -->
+      <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <!-- Search -->
+        <div class="relative w-full sm:w-72">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            class="block w-full pl-10 pr-3 py-2 border-0 bg-gray-50 hover:bg-gray-100 focus:bg-white rounded-lg text-gray-900 text-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 transition-all sm:text-sm sm:leading-6"
+            placeholder="Search projects..."
+          >
+        </div>
+
+        <!-- Filters & Actions -->
+        <div class="flex items-center gap-3">
+          <div *ngIf="selectedProjects.size > 0" class="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-md text-sm font-medium animate-fade-in">
+            <span class="flex h-2 w-2 rounded-full bg-indigo-600"></span>
+            {{ selectedProjects.size }} selected
+          </div>
+          
+          <button class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filter
+          </button>
+          <div class="h-6 w-px bg-gray-200"></div>
+          <button class="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-50/50 border-b border-gray-100">
+              <th class="py-4 pl-6 pr-3 w-12 text-center">
+                <input
+                  type="checkbox"
+                  [checked]="isAllSelected()"
+                  (change)="toggleAll($event)"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 transition duration-150 ease-in-out cursor-pointer"
+                />
+              </th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project Name</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project Lead</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date Created</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50 bg-white">
+            <tr
+              *ngFor="let project of filteredProjects"
+              class="group hover:bg-gray-50/80 transition-colors duration-200 cursor-pointer"
+              [class.bg-indigo-50/30]="isSelected(project._id)"
+              (click)="toggleProject(project._id)"
+            >
+              <td class="py-4 pl-6 pr-3 text-center">
+                <input
+                  type="checkbox"
+                  [checked]="isSelected(project._id)"
+                  (click)="$event.stopPropagation(); toggleProject(project._id)"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 transition duration-150 ease-in-out cursor-pointer"
+                />
+              </td>
+              
+              <td class="px-6 py-4">
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-gray-900">{{ project.name }}</span>
+                  <span class="text-xs text-gray-500 mt-0.5 line-clamp-1 max-w-[200px]">{{ project.description || 'No description provided' }}</span>
+                </div>
+              </td>
+
+              <td class="px-6 py-4">
+                 <div class="flex items-center gap-3">
+                  <div class="relative">
+                    <img
+                      [src]="project.owner.avatar"
+                      alt=""
+                      class="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    />
+                    <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white bg-green-400"></span>
+                  </div>
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">{{ project.owner.name }}</div>
+                    <div class="text-xs text-gray-500">{{ project.owner.email }}</div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>{{ project.created_at | date:'mediumDate' }}</span>
+                </div>
+              </td>
+
+              <td class="px-6 py-4">
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border"
+                  [ngClass]="project.is_archived ? 'bg-gray-50 text-gray-600 border-gray-200' : 'bg-emerald-50 text-emerald-700 border-emerald-100'"
+                >
+                  <span class="h-1.5 w-1.5 rounded-full" [ngClass]="project.is_archived ? 'bg-gray-400' : 'bg-emerald-500'"></span>
+                  {{ getStatusText(project.is_archived) }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <button
+                    class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-none hover:shadow-sm"
+                    title="Edit Project"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-white rounded-lg transition-all shadow-none hover:shadow-sm"
+                    title="Delete Project"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State (Shown when no projects found) -->
+        <div *ngIf="filteredProjects.length === 0" class="p-12 text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+              <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">No projects found</h3>
+            <p class="mt-2 text-sm text-gray-500">We couldn't find any projects matching your search.</p>
+        </div>
+      </div>
+
+      <!-- Footer / Pagination -->
+      <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
+        <div class="text-sm text-gray-500">
+          Showing <span class="font-medium text-gray-900">1</span> to <span class="font-medium text-gray-900">{{ filteredProjects.length }}</span> of <span class="font-medium text-gray-900">{{ projects.length }}</span> results
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-600 hover:bg-white hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled>
+            Previous
+          </button>
+          <button class="px-3 py-1.5 border border-gray-200 rounded-md text-sm font-medium text-gray-600 hover:bg-white hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            Next
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface User {
@@ -22,103 +22,83 @@ interface Project {
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatePipe],
   templateUrl: './projects.html',
 })
 export class Projects {
   searchQuery: string = '';
-  selectedProjects: Set<number> = new Set();
+  selectedProjects: Set<string> = new Set();
 
   projects: Project[] = [
     {
-      id: 1,
+      _id: '1',
       name: 'Website Redesign',
-      lead: 'Darlene Robertson',
-      leadAvatar: 'https://i.pravatar.cc/150?u=1',
-      category: 'Design Team',
-      contactEmail: 'alma.lawson@example.com',
-      deadline: '(252) 555-0126', // Using phone format from image as placeholder for now, or actual date
-      status: 'Active',
+      description: 'Redesigning the company corporate website',
+      owner: {
+        _id: 'u1',
+        name: 'Darlene Robertson',
+        email: 'alma.lawson@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=1',
+      },
+      is_archived: false,
+      created_at: '2024-01-15T10:00:00Z',
+      updated_at: '2024-01-20T10:00:00Z',
     },
     {
-      id: 2,
+      _id: '2',
       name: 'Mobile App Support',
-      lead: 'Annette Black',
-      leadAvatar: 'https://i.pravatar.cc/150?u=2',
-      category: 'Development',
-      contactEmail: 'bill.sanders@example.com',
-      deadline: '(252) 555-0127',
-      status: 'Pending',
+      description: 'Ongoing maintenance for the iOS application',
+      owner: {
+        _id: 'u2',
+        name: 'Annette Black',
+        email: 'bill.sanders@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=2',
+      },
+      is_archived: true,
+      created_at: '2023-11-05T10:00:00Z',
+      updated_at: '2023-12-01T10:00:00Z',
     },
     {
-      id: 3,
+      _id: '3',
       name: 'Marketing Campaign',
-      lead: 'Ronald Richards',
-      leadAvatar: 'https://i.pravatar.cc/150?u=3',
-      category: 'Marketing',
-      contactEmail: 'weaver@example.com',
-      deadline: '(252) 555-0128',
-      status: 'Active',
+      description: 'Q1 2024 Digital Marketing Strategy',
+      owner: {
+        _id: 'u3',
+        name: 'Ronald Richards',
+        email: 'weaver@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=3',
+      },
+      is_archived: false,
+      created_at: '2024-02-01T09:30:00Z',
+      updated_at: '2024-02-02T14:20:00Z',
     },
     {
-      id: 4,
+      _id: '4',
       name: 'Server Migration',
-      lead: 'Ralph Edwards',
-      leadAvatar: 'https://i.pravatar.cc/150?u=4',
-      category: 'Engineering',
-      contactEmail: 'simmons@example.com',
-      deadline: '(252) 555-0129',
-      status: 'Active',
+      description: 'Migrating legacy servers to AWS',
+      owner: {
+        _id: 'u4',
+        name: 'Ralph Edwards',
+        email: 'simmons@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=4',
+      },
+      is_archived: false,
+      created_at: '2024-01-10T11:00:00Z',
+      updated_at: '2024-01-25T16:45:00Z',
     },
     {
-      id: 5,
+      _id: '5',
       name: 'Brand Identity',
-      lead: 'Edward John',
-      leadAvatar: 'https://i.pravatar.cc/150?u=5',
-      category: 'Sales',
-      contactEmail: 'lawson@example.com',
-      deadline: '(252) 555-0130',
-      status: 'Active',
-    },
-    {
-      id: 6,
-      name: 'User Research',
-      lead: 'Esther Howard',
-      leadAvatar: 'https://i.pravatar.cc/150?u=6',
-      category: 'Human Resources',
-      contactEmail: 'roberts@example.com',
-      deadline: '(252) 555-0131',
-      status: 'Active',
-    },
-    {
-      id: 7,
-      name: 'Cloud Infrastructure',
-      lead: 'Devon Lane',
-      leadAvatar: 'https://i.pravatar.cc/150?u=7',
-      category: 'Customer Success',
-      contactEmail: 'tim.jennings@example.com',
-      deadline: '(252) 555-0132',
-      status: 'Pending',
-    },
-    {
-      id: 8,
-      name: 'Data Analysis',
-      lead: 'Albert Flores',
-      leadAvatar: 'https://i.pravatar.cc/150?u=8',
-      category: 'Marketing',
-      contactEmail: 'debra.holt@example.com',
-      deadline: '(252) 555-0133',
-      status: 'Active',
-    },
-    {
-      id: 9,
-      name: 'Security Audit',
-      lead: 'Courtney Henry',
-      leadAvatar: 'https://i.pravatar.cc/150?u=9',
-      category: 'Product',
-      contactEmail: 'felicia.reid@example.com',
-      deadline: '(252) 555-0134',
-      status: 'Pending',
+      description: 'New logo and brand guidelines',
+      owner: {
+        _id: 'u5',
+        name: 'Edward John',
+        email: 'lawson@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=5',
+      },
+      is_archived: false,
+      created_at: '2023-12-15T08:00:00Z',
+      updated_at: '2024-01-05T13:00:00Z',
     },
   ];
 
@@ -126,7 +106,7 @@ export class Projects {
     return this.projects.filter(
       (p) =>
         p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        p.lead.toLowerCase().includes(this.searchQuery.toLowerCase()),
+        p.owner.name.toLowerCase().includes(this.searchQuery.toLowerCase()),
     );
   }
 
@@ -136,13 +116,13 @@ export class Projects {
 
   toggleAll(event: any) {
     if (event.target.checked) {
-      this.selectedProjects = new Set(this.projects.map((p) => p.id));
+      this.selectedProjects = new Set(this.projects.map((p) => p._id));
     } else {
       this.selectedProjects.clear();
     }
   }
 
-  toggleProject(id: number) {
+  toggleProject(id: string) {
     if (this.selectedProjects.has(id)) {
       this.selectedProjects.delete(id);
     } else {
@@ -150,22 +130,17 @@ export class Projects {
     }
   }
 
-  isSelected(id: number) {
+  isSelected(id: string) {
     return this.selectedProjects.has(id);
   }
 
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'Active':
-        return 'bg-emerald-100 text-emerald-600';
-      case 'Pending':
-        return 'bg-amber-100 text-amber-600';
-      case 'Completed':
-        return 'bg-blue-100 text-blue-600';
-      case 'On Hold':
-        return 'bg-gray-100 text-gray-600';
-      default:
-        return 'bg-gray-100 text-gray-600';
-    }
+  getStatusColor(archived: boolean): string {
+    return archived
+      ? 'bg-gray-100 text-gray-600' // Archived
+      : 'bg-emerald-100 text-emerald-600'; // Active
+  }
+
+  getStatusText(archived: boolean): string {
+    return archived ? 'Archived' : 'Active';
   }
 }

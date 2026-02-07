@@ -20,4 +20,15 @@
   --color-dark-bg: #020617; /* The screen background */
   --color-dark-surface: #0f172a; /* The card background */
   --color-dark-border: #1e293b; /* Borders in dark mode */
+
+  /* TYPOGRAPHY */
+  --font-sans:
+    'Public Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Force apply the font globally to ensure it takes effect immediately */
+html,
+body {
+  font-family: var(--font-sans);
 }

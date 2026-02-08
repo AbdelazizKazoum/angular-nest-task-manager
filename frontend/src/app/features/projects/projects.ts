@@ -28,6 +28,7 @@ interface Project {
 export class Projects {
   searchQuery: string = '';
   selectedProjects: Set<string> = new Set();
+  expandedProjectId: string | null = null;
 
   projects: Project[] = [
     {
@@ -127,6 +128,14 @@ export class Projects {
       this.selectedProjects.delete(id);
     } else {
       this.selectedProjects.add(id);
+    }
+  }
+
+  toggleDetails(id: string) {
+    if (this.expandedProjectId === id) {
+      this.expandedProjectId = null;
+    } else {
+      this.expandedProjectId = id;
     }
   }
 

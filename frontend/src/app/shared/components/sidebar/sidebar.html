@@ -46,96 +46,55 @@
     [class.px-5]="!sidebarService.isCollapsed()"
     [class.px-2]="sidebarService.isCollapsed()"
   >
-    <!-- Section Header: HOME -->
-    <div
-      *ngIf="!sidebarService.isCollapsed()"
-      class="px-3 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase whitespace-nowrap"
-    >
-      Home
-    </div>
-    <!-- Separator for Collapsed Mode instead of Text -->
-    <div
-      *ngIf="sidebarService.isCollapsed()"
-      class="h-px mx-4 my-4 bg-gray-200 dark:bg-gray-700"
-    ></div>
-
-    <!-- Dashboard Link -->
-    <a
-      routerLink="/dashboard"
-      routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 shadow-sm"
-      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
-      [class.gap-3]="!sidebarService.isCollapsed()"
-      [class.justify-center]="sidebarService.isCollapsed()"
-    >
-      <svg
-        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
+    <ng-container *ngFor="let item of menuItems; let i = index; trackBy: trackByItem">
+      <!-- Section Header (only in expanded mode) -->
+      <div
+        *ngIf="
+          !sidebarService.isCollapsed() && (i === 0 || item.section !== menuItems[i - 1].section)
+        "
+        class="px-3 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase whitespace-nowrap"
+        [class.mt-6]="i > 0"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-        ></path>
-      </svg>
-      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">Dashboard</span>
-    </a>
+        {{ item.section }}
+      </div>
 
-    <!-- APP Section -->
-    <div
-      *ngIf="!sidebarService.isCollapsed()"
-      class="px-3 mt-6 mb-2 text-xs font-bold tracking-wider text-gray-400 uppercase whitespace-nowrap"
-    >
-      App
-    </div>
+      <!-- Separator for Collapsed Mode when section changes -->
+      <div
+        *ngIf="sidebarService.isCollapsed() && i > 0 && item.section !== menuItems[i - 1].section"
+        class="h-px mx-4 my-4 bg-gray-200 dark:bg-gray-700"
+      ></div>
 
-    <!-- My Tasks Link -->
-    <a
-      routerLink="/tasks"
-      routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 shadow-sm"
-      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
-      [class.gap-3]="!sidebarService.isCollapsed()"
-      [class.justify-center]="sidebarService.isCollapsed()"
-    >
-      <svg
-        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
+      <!-- Menu Item Link -->
+      <a
+        [routerLink]="item.isRouterLink ? item.route : null"
+        [routerLinkActive]="
+          item.isRouterLink
+            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-400 shadow-sm'
+            : []
+        "
+        class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
+        [class.cursor-pointer]="!item.isRouterLink"
+        [class.gap-3]="!sidebarService.isCollapsed()"
+        [class.justify-center]="sidebarService.isCollapsed()"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-        ></path>
-      </svg>
-      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">My Tasks</span>
-    </a>
-
-    <!-- Calendar Link -->
-    <a
-      class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-all cursor-pointer rounded-xl hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 group"
-      [class.gap-3]="!sidebarService.isCollapsed()"
-      [class.justify-center]="sidebarService.isCollapsed()"
-    >
-      <svg
-        class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-        ></path>
-      </svg>
-      <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">Calendar</span>
-    </a>
+        <svg
+          class="w-6 h-6 shrink-0 transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            [attr.d]="item.icon"
+          ></path>
+        </svg>
+        <span *ngIf="!sidebarService.isCollapsed()" class="whitespace-nowrap">{{
+          item.label
+        }}</span>
+      </a>
+    </ng-container>
   </nav>
 
   <!-- Bottom User Card -->

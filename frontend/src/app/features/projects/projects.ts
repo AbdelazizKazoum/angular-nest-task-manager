@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProjectModal, ProjectFormData } from './components/project-modal';
 
 interface User {
   _id: string;
@@ -22,13 +23,20 @@ interface Project {
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [CommonModule, FormsModule, DatePipe, ProjectModal],
   templateUrl: './projects.html',
 })
 export class Projects {
   searchQuery: string = '';
   selectedProjects: Set<string> = new Set();
   expandedProjectId: string | null = null;
+  activeTab: 'active' | 'archived' = 'active';
+
+  // Modal State
+  isModalOpen = false;
+  modalMode: 'create' | 'edit' = 'create';
+  editingProjectData: ProjectFormData | null = null;
+  editingProjectId: string | null = null;
 
   projects: Project[] = [
     {
@@ -151,5 +159,63 @@ export class Projects {
 
   getStatusText(archived: boolean): string {
     return archived ? 'Archived' : 'Active';
+  }
+
+  setActiveTab(tab: 'active' | 'archived') {
+    this.activeTab = tab;
+  }
+
+  // Modal Actions
+  openModal(mode: 'create' | 'edit', project?: Project) {
+    this.isModalOpen = true;
+    this.modalMode = mode;
+
+    if (mode === 'edit' && project) {
+      this.editingProjectId = project._id;
+      this.editingProjectData = {
+        name: project.name,
+        description: project.description || '',
+      };
+    } else {
+      this.editingProjectId = null;
+      this.editingProjectData = null;
+    }
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.editingProjectData = null;
+    this.editingProjectId = null;
+  }
+
+  handleSaveProject(data: ProjectFormData) {
+    if (this.modalMode === 'create') {
+      const newProject: Project = {
+        _id: Math.random().toString(36).substr(2, 9),
+        name: data.name,
+        description: data.description,
+        owner: {
+          _id: 'u1',
+          name: 'Admin User',
+          email: 'admin@example.com',
+          avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff',
+        },
+        is_archived: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      this.projects.unshift(newProject);
+    } else if (this.modalMode === 'edit' && this.editingProjectId) {
+      const index = this.projects.findIndex((p) => p._id === this.editingProjectId);
+      if (index !== -1) {
+        this.projects[index] = {
+          ...this.projects[index],
+          name: data.name,
+          description: data.description,
+          updated_at: new Date().toISOString(),
+        };
+      }
+    }
+    this.closeModal();
   }
 }

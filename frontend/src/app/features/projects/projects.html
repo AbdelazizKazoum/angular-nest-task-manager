@@ -19,6 +19,7 @@
       </div>
       <div>
         <button
+          (click)="openModal('create')"
           class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md focus:ring-4 focus:ring-gray-200"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -281,7 +282,7 @@
                     <button
                       class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all shadow-none hover:shadow-sm"
                       title="Edit Project"
-                      (click)="$event.stopPropagation()"
+                      (click)="$event.stopPropagation(); openModal('edit', project)"
                     >
                       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -311,13 +312,21 @@
               </tr>
 
               <!-- Expanded details row -->
-              <tr
-                *ngIf="expandedProjectId === project._id"
-                class="transition-all duration-300 ease-in-out"
-              >
-                <td colspan="6" class="px-6 pb-6 pt-2 bg-gray-50/30 border-b border-gray-100">
+              <tr class="transition-all duration-300 ease-in-out">
+                <td
+                  colspan="6"
+                  class="bg-gray-50/30 border-b border-gray-100 transition-all duration-300 ease-out"
+                  [ngClass]="{
+                    'px-6 pb-6 pt-2': expandedProjectId === project._id,
+                    'p-0': expandedProjectId !== project._id,
+                  }"
+                >
                   <div
-                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm animate-fade-in"
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm overflow-hidden transition-all duration-300 ease-out"
+                    [ngClass]="{
+                      'max-h-0 opacity-0 -translate-y-4': expandedProjectId !== project._id,
+                      'max-h-[1000px] opacity-100 translate-y-0': expandedProjectId === project._id,
+                    }"
                   >
                     <!-- Header -->
                     <div
@@ -671,3 +680,12 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Component -->
+<app-project-modal
+  [isOpen]="isModalOpen"
+  [mode]="modalMode"
+  [initialData]="editingProjectData"
+  (close)="closeModal()"
+  (save)="handleSaveProject($event)"
+></app-project-modal>

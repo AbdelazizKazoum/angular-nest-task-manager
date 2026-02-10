@@ -1,0 +1,89 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+  <!-- Backdrop -->
+  <div
+    class="fixed inset-0 bg-gray-900/40 backdrop-blur-[2px] transition-opacity"
+    (click)="onClose()"
+  ></div>
+
+  <!-- Modal Positioning -->
+  <div class="flex min-h-full items-center justify-center p-4 text-center">
+    <!-- Modal Panel -->
+    <div
+      class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl transition-all w-full max-w-md border border-gray-100"
+    >
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h3 class="text-base font-semibold text-gray-900">
+          {{ mode === 'create' ? 'Create Project' : 'Edit Project' }}
+        </h3>
+        <button
+          (click)="onClose()"
+          class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-md hover:bg-gray-100"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="px-6 py-6">
+        <form (ngSubmit)="onSubmit()" class="space-y-5">
+          <!-- Name Input -->
+          <div>
+            <label for="project-name" class="block text-sm font-medium text-gray-700 mb-1.5"
+              >Name</label
+            >
+            <input
+              type="text"
+              name="name"
+              id="project-name"
+              [(ngModel)]="projectForm.name"
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm py-2.5 px-3"
+              placeholder="e.g. Website Redesign"
+              required
+            />
+          </div>
+
+          <!-- Description Input -->
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-1.5">
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              [(ngModel)]="projectForm.description"
+              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm resize-none py-2.5 px-3"
+              placeholder="Add project details..."
+            ></textarea>
+          </div>
+
+          <!-- Footer/Buttons -->
+          <div class="pt-2 flex items-center justify-end gap-3">
+            <button
+              type="button"
+              (click)="onClose()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 shadow-sm"
+            >
+              {{ mode === 'create' ? 'Create Project' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
